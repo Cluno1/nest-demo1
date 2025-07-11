@@ -1,0 +1,28 @@
+# POST  http://localhost:3000/auth/login
+
+
+
+# curl -X POST http://localhost:3000/room/createRoom
+#  \
+# -H "Content-Type: application/json" \
+# -d '{
+#   "roomName": "Game Room 1",
+#   "playerCount": 4,
+#   "isPublic": true,
+#   "password": null,
+#   "owner": {
+#     "name":"zld",
+#     "avatar":"null",
+#     "user_rank":"null"
+#   },
+#   "players": []
+# }'
+
+
+POST  http://localhost:3001/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "account": "admin",
+    "password": "123123"
+}
