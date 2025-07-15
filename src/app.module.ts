@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-06-27 16:32:57
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-11 15:44:36
+ * @LastEditTime: 2025-07-15 16:26:16
  * @FilePath: \nest-demo1\src\app.module.ts
  * @Description:
  *
@@ -20,6 +20,7 @@ import { EventTypes } from './entity/eventType.entity';
 import { EventUser } from './entity/eventUser.entity';
 import { Permission } from './entity/permission.entity';
 import { UserPermission } from './entity/user-permission.entity';
+import { Role } from './entity/role.entity';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UserPermission } from './entity/user-permission.entity';
         EventUser,
         Permission,
         UserPermission,
+        Role,
       ], // 实体类将在这里定义
       synchronize: true, // 生产环境请设置为 false
     }),

@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:06:31
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-11 16:50:30
+ * @LastEditTime: 2025-07-15 17:21:10
  * @FilePath: \nest-demo1\src\user\user.service.ts
  * @Description:
  *
@@ -14,6 +14,7 @@ https://docs.nestjs.com/providers#services
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
+import { getReturnUser } from 'src/utils/user/userUtil';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -25,6 +26,15 @@ export class UserService {
 
   async findOneByAccount(account: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { account } });
+  }
+  /**
+   * 创建用户
+   * @param userData
+   * @returns
+   */
+  async createUser(userData: Partial<User>): Promise<User> {
+    const newUser = this.userRepository.create(userData);
+    return this.userRepository.save(newUser);
   }
   /**
    * 返回用户+权限
@@ -47,5 +57,13 @@ export class UserService {
       where: { account },
       relations: ['permissions', 'permissions.permission'], // 加载关联权限
     });
+  }
+  /**
+   * 获取所有用户
+   * @returns
+   */
+  async findAllUsers() {
+    const users = await this.userRepository.find(); // 查询所有用户数据
+    return users.map((_) => getReturnUser(_));
   }
 }
