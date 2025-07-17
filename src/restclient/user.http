@@ -23,20 +23,28 @@ POST  http://localhost:3001/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "account": "root",
-    "password": "12323"
+    "account": "admin",
+    "password": "123123"
 }
 ###
 ```json
+
 {
   "code": 200,
   "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWNjb3VudCI6InJvb3QiLCJpYXQiOjE3NTI0ODQ0MzksImV4cCI6MTc1MjkxNjQzOX0.OdWDJYO6IdPFpEueQPaNuvrd5ivOJz8c84jpMRXvhmg",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyNzIwNzYzLCJleHAiOjE3NTMxNTI3NjN9.G5-HEyK2qzuElycgbENym8p6hC17O3mifVyM95rDhLI",
     "user": {
-      "id": 2,
-      "account": "root",
-      "name": "root",
-      "permissions": []
+      "id": 1,
+      "avatar": null,
+      "account": "admin",
+      "name": "张连登",
+      "roles": [
+        "admin"
+      ],
+      "permissions": [
+        "*:*:*",
+        "system:role:add"
+      ]
     }
   }
 }
@@ -58,3 +66,9 @@ content-type: application/json
 
 ###
 Get http://localhost:3001/user/all HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyNzIwNzYzLCJleHAiOjE3NTMxNTI3NjN9.G5-HEyK2qzuElycgbENym8p6hC17O3mifVyM95rDhLI
+
+###
+
+GET http://localhost:3001/menu/async_menu Http/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyNzIwNzYzLCJleHAiOjE3NTMxNTI3NjN9.G5-HEyK2qzuElycgbENym8p6hC17O3mifVyM95rDhLI

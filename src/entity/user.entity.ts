@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 15:53:51
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-15 16:24:29
+ * @LastEditTime: 2025-07-16 17:24:51
  * @FilePath: \nest-demo1\src\entity\user.entity.ts
  * @Description:
  *
@@ -13,12 +13,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  OneToMany,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { UserPermission } from './user-permission.entity';
 import { Role } from './role.entity';
+import { Permission } from './permission.entity';
 
 @Entity('e_user')
 export class User {
@@ -70,8 +69,27 @@ export class User {
   @Column({ type: 'tinyint', default: 1, comment: '1: active; 0: disabled' })
   disable?: number;
 
-  @OneToMany(() => UserPermission, (userPermission) => userPermission.user)
-  permissions?: UserPermission[]; // 通过中间表关联
+  @Column({
+    name: 'is_delete',
+    type: 'tinyint',
+    default: 0,
+    comment: '1: 删除; 0: 没有被标记删除',
+  })
+  isDelete?: number;
+
+  @Column({
+    name: 'delete_time',
+    nullable: true,
+  })
+  deleteTime?: Date;
+
+  @ManyToMany(() => Permission, (p) => p.users)
+  @JoinTable({
+    name: 'user_permission', // 使用现有表
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'permission_id', referencedColumnName: 'id' },
+  })
+  permissions?: Permission[];
 
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable({

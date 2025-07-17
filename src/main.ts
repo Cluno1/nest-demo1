@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-06-27 16:32:57
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-15 11:54:52
+ * @LastEditTime: 2025-07-16 10:15:10
  * @FilePath: \nest-demo1\src\main.ts
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-
+/* eslint-disable  @typescript-eslint/no-floating-promises */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // 启用 CORS

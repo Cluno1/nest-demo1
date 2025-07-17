@@ -2,16 +2,18 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-03 17:29:35
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-15 17:46:42
+ * @LastEditTime: 2025-07-17 10:34:18
  * @FilePath: \nest-demo1\src\utils\logger.ts
  * @Description:
  *
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
  */
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/*  eslint-disable  @typescript-eslint/no-unsafe-member-access */
 const GENERAL = 'GENERAL 基础';
 const CONTROLLER = 'CONTROLLER 控制层';
-export class UseLogger {
+export class useLogger {
   /**
    * 时间戳
    * @returns
@@ -117,7 +119,7 @@ export class UseLogger {
     serviceName: string,
     methodName: string,
     result: any,
-    executionTime: number,
+    executionTime: number = 0,
   ) {
     const prefix = this.formatPrefix(
       'log',
@@ -181,8 +183,8 @@ export class UseLogger {
       `${method.toUpperCase()} ${url}`,
     );
     console.error(`${prefix} [${statusCode}]`, {
-      error: error.message,
-      stack: error.stack,
+      error: error?.message,
+      stack: error?.stack,
     });
   }
 }

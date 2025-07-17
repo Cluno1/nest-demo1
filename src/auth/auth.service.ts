@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:41:07
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-15 17:15:22
+ * @LastEditTime: 2025-07-17 10:36:16
  * @FilePath: \nest-demo1\src\auth\auth.service.ts
  * @Description:
  *
@@ -53,36 +53,47 @@ export class AuthService {
    */
   async validateUser(account: string, password: string) {
     useLogger.printLog('account', account, 'validateUser', 'log');
-    const user =
-      await this.userService.findOneWithPermissionsByAccount(account);
-    useLogger.printLog(
-      'user',
-      user,
-      ['validateUser', 'this.userService.findOneByAccount'],
-      'log',
-    );
-    if (!user) throw new UnauthorizedException(INVALID_USER);
-
-    const isPasswordValid = await bcrypt.compare(password, user.password ?? '');
-    useLogger.printLog('isPasswordValid', isPasswordValid, [
-      'validateUser',
-      'bcrypt.compare',
-    ]);
-    if (!isPasswordValid) throw new UnauthorizedException(INVALID_USER);
-    useLogger.printLog('come1');
-
     try {
-      const payload = new Payload(user.id ?? 0, user.account ?? '');
-      useLogger.printLog('payload', payload);
-      const token = this.jwtService.sign(payload.getPayloadObj());
-      useLogger.printLog('come2');
-      return {
-        token,
-        user: getReturnUser(user),
-      };
-    } catch (error) {
-      useLogger.printLog(CATCH_ERROR + 'token generation error', error);
-      throw error;
+      const user =
+        await this.userService.findOneWithPermissionsByAccount(account);
+      useLogger.printLog(
+        'user',
+        user,
+        ['validateUser', 'this.userService.findOneByAccount'],
+        'log',
+      );
+      if (!user) throw new UnauthorizedException(INVALID_USER);
+
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        user.password ?? '',
+      );
+      useLogger.printLog('isPasswordValid', isPasswordValid, [
+        'validateUser',
+        'bcrypt.compare',
+      ]);
+      if (!isPasswordValid) throw new UnauthorizedException(INVALID_USER);
+      useLogger.printLog('come1');
+
+      try {
+        const payload = new Payload(user.id ?? 0, user.account ?? '');
+        useLogger.printLog('payload', payload);
+        const token = this.jwtService.sign(payload.getPayloadObj());
+        useLogger.printLog('come2');
+        return {
+          token,
+          user: getReturnUser(user),
+        };
+      } catch (error) {
+        useLogger.printLog(CATCH_ERROR + 'token generation error', error);
+        throw error;
+      }
+    } catch (err) {
+      useLogger.serviceError(
+        'validateUser',
+        'findOneWithPermissionsByAccount',
+        err as Error,
+      );
     }
   }
   async register(registerDto: RegisterDto) {
@@ -112,7 +123,11 @@ export class AuthService {
       throw err;
     }
   }
-
+  /**
+   * 解密token
+   * @param token
+   * @returns
+   */
   decodeToken(token: string) {
     try {
       const decoded = this.jwtService.verify<Payload>(token); // 验证并解析 token

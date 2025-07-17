@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-15 16:21:56
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-15 16:38:17
+ * @LastEditTime: 2025-07-16 17:03:54
  * @FilePath: \nest-demo1\src\entity\role.entity.ts
  * @Description:
  *
@@ -17,6 +17,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Permission } from './permission.entity';
+import { MenuRole } from './menuRole.entity';
 
 @Entity('role')
 export class Role {
@@ -47,4 +48,12 @@ export class Role {
     inverseJoinColumn: { name: 'permission_id', referencedColumnName: 'id' },
   })
   permissions?: Permission[];
+
+  @ManyToMany(() => MenuRole)
+  @JoinTable({
+    name: 'role_menu_role', // 中间表名
+    joinColumn: { name: 'role_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'menu_role_id', referencedColumnName: 'id' },
+  })
+  menuRoles?: MenuRole[];
 }

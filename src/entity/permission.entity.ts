@@ -2,21 +2,16 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:24:55
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-15 16:38:06
+ * @LastEditTime: 2025-07-16 17:21:12
  * @FilePath: \nest-demo1\src\entity\permission.entity.ts
  * @Description:
  *
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
  */
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  ManyToMany,
-} from 'typeorm';
-import { UserPermission } from './user-permission.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+
 import { Role } from './role.entity';
+import { User } from './user.entity';
 
 @Entity('permission')
 export class Permission {
@@ -34,9 +29,6 @@ export class Permission {
   @ManyToMany(() => Role, (role) => role.permissions)
   roles?: Role[];
 
-  @OneToMany(
-    () => UserPermission,
-    (userPermission) => userPermission.permission,
-  )
-  userPermissions?: UserPermission[];
+  @ManyToMany(() => User, (u) => u.permissions)
+  users?: User[];
 }
