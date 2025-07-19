@@ -2,13 +2,13 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:53:02
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-14 14:26:00
+ * @LastEditTime: 2025-07-17 16:48:22
  * @FilePath: \nest-demo1\src\auth\auth.controller.ts
  * @Description:
  *
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
  */
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { useLogger } from 'src/utils/logger';
@@ -32,5 +32,13 @@ export class AuthController {
     const newUser = await this.authService.register(registerDto);
     useLogger.printLog('newUser', newUser);
     return newUser;
+  }
+  @Post('refresh-token')
+  refreshToken(@Body() body: { refreshToken: string }) {
+    return this.authService.refreshAccessToken(body.refreshToken);
+  }
+  @Post('logout')
+  logout(@Body() Body: { id: number }) {
+    return this.authService.logout(Body.id);
   }
 }

@@ -32,10 +32,12 @@ content-type: application/json
 {
   "code": 200,
   "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyNzIwNzYzLCJleHAiOjE3NTMxNTI3NjN9.G5-HEyK2qzuElycgbENym8p6hC17O3mifVyM95rDhLI",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyODA5Nzc1LCJleHAiOjE3NTMyNDE3NzV9.T9ki-52-rSq4_zvf3f4cJCNxmOolHW3a4XXZj0NEq7E",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaXNSZWZyZXNoVG9rZW4iOnRydWUsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzUyODA5Nzc1LCJleHAiOjE3NTU0MDE3NzV9.kRvzzR44SMqDCDCZ3HcoO3Q1JPSkoJegfNIlJSXVaVk",
+    "expiresIn": "2025/07/23 11:36:15",
     "user": {
       "id": 1,
-      "avatar": null,
+      "avatar": "https://avatars.githubusercontent.com/u/44761321",
       "account": "admin",
       "name": "张连登",
       "roles": [
@@ -71,4 +73,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3Vud
 ###
 
 GET http://localhost:3001/menu/async_menu Http/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyNzIwNzYzLCJleHAiOjE3NTMxNTI3NjN9.G5-HEyK2qzuElycgbENym8p6hC17O3mifVyM95rDhLI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyODA5Nzc1LCJleHAiOjE3NTMyNDE3NzV9.T9ki-52-rSq4_zvf3f4cJCNxmOolHW3a4XXZj0NEq7E
+
+###
+
+
+POST http://localhost:3001/auth/refresh-token HTTP/1.1
+content-type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaXNSZWZyZXNoVG9rZW4iOnRydWUsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzUyODA5Nzc1LCJleHAiOjE3NTU0MDE3NzV9.kRvzzR44SMqDCDCZ3HcoO3Q1JPSkoJegfNIlJSXVaVk"
+    
+}
+
+###
+```json
+{
+  "code": 200,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyODEwODUxLCJleHAiOjE3NTMyNDI4NTF9.XilTDHj7eCpQ3aU9e48iHjUNNa_Pl1Q-3Lf-DWoO258",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaXNSZWZyZXNoVG9rZW4iOnRydWUsInRva2VuVmVyc2lvbiI6MSwiaWF0IjoxNzUyODEwODUxLCJleHAiOjE3NTU0MDI4NTF9.czrJFjfTpbO2qCJhTrVYaGbcKIGF1hO2Y6gaiQeUVuc",
+    "expiresIn": "2025/07/23 11:54:11"
+  }
+}
+```
+

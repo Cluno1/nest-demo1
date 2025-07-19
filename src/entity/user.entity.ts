@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 15:53:51
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-16 17:24:51
+ * @LastEditTime: 2025-07-17 15:33:19
  * @FilePath: \nest-demo1\src\entity\user.entity.ts
  * @Description:
  *
@@ -82,6 +82,9 @@ export class User {
     nullable: true,
   })
   deleteTime?: Date;
+
+  @Column({ name: 'token_version', default: 0 })
+  tokenVersion: number = 0;
 
   @ManyToMany(() => Permission, (p) => p.users)
   @JoinTable({

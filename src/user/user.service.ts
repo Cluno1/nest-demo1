@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:06:31
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-17 10:52:27
+ * @LastEditTime: 2025-07-18 11:54:03
  * @FilePath: \nest-demo1\src\user\user.service.ts
  * @Description:
  *
@@ -45,7 +45,7 @@ export class UserService {
   async findOneWithPermissions(userId: number): Promise<User | null> {
     return this.userRepository.findOne({
       where: { id: userId },
-      relations: ['permissions', 'role.permissions'], // 加载关联权限
+      relations: ['permissions', 'roles.permissions'], // 加载关联权限
     });
   }
 
@@ -78,5 +78,15 @@ export class UserService {
   async findAllUsers() {
     const users = await this.userRepository.find(); // 查询所有用户数据
     return users.map((_) => getReturnUser(_));
+  }
+  /**
+   * 更新token 版本
+   * @param userId
+   */
+  async revokeRefreshTokens(userId: number) {
+    await this.userRepository.update(userId, {
+      tokenVersion: () => 'tokenVersion + 1', // 递增 tokenVersion 使所有旧 token 失效
+    });
+    return await this.findOneWithPermissions(userId);
   }
 }
