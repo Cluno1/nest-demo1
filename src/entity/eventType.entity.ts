@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 15:56:58
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-11 16:17:33
+ * @LastEditTime: 2025-07-19 13:01:34
  * @FilePath: \nest-demo1\src\entity\eventType.entity.ts
  * @Description:
  *
@@ -14,7 +14,9 @@ import {
   Column,
   CreateDateColumn,
   Index,
+  OneToOne,
 } from 'typeorm';
+import { EventData } from './eventData.entity';
 
 @Entity('event_types')
 export class EventTypes {
@@ -27,6 +29,9 @@ export class EventTypes {
   @Column({ type: 'varchar', length: 255, nullable: true, comment: '事件名称' })
   @Index('idx_name')
   name?: string;
+
+  @OneToOne(() => EventData, (eventData) => eventData.eventType)
+  eventData?: EventData;
 
   @Column({ type: 'text', nullable: true, comment: '描述' })
   description?: string;

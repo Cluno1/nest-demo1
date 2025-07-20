@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 15:57:15
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-11 16:14:53
+ * @LastEditTime: 2025-07-19 13:01:40
  * @FilePath: \nest-demo1\src\entity\eventData.entity.ts
  * @Description:
  *
@@ -15,6 +15,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { EventTypes } from './eventType.entity';
 import { EventUser } from './eventUser.entity';
@@ -30,14 +31,16 @@ export class EventData {
   @Column({ name: 'event_types_id', nullable: false, comment: '类型id' })
   eventTypesId?: number;
 
-  @ManyToOne(() => EventTypes, { nullable: false })
+  @OneToOne(() => EventTypes, (eventType) => eventType.eventData, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'event_types_id' })
   eventType?: EventTypes;
 
   @Column({ name: 'event_user_id', nullable: false, comment: 'user id' })
   eventUserId?: number;
 
-  @ManyToOne(() => EventUser, { nullable: false })
+  @ManyToOne(() => EventUser, (eventUser) => eventUser.eventData)
   @JoinColumn({ name: 'event_user_id' })
   eventUser?: EventUser;
 

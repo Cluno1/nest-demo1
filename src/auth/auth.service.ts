@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:41:07
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-18 11:52:24
+ * @LastEditTime: 2025-07-19 14:27:08
  * @FilePath: \nest-demo1\src\auth\auth.service.ts
  * @Description:
  *
@@ -80,7 +80,6 @@ export class AuthService {
         },
         { expiresIn: REFRESH_TOKEN_TIME }, // refreshToken 有效期更长
       );
-
       return {
         accessToken,
         refreshToken,

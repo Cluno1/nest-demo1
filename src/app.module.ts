@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-06-27 16:32:57
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-16 18:51:33
+ * @LastEditTime: 2025-07-19 14:39:35
  * @FilePath: \nest-demo1\src\app.module.ts
  * @Description:
  *
@@ -23,9 +23,11 @@ import { Permission } from './entity/permission.entity';
 import { Role } from './entity/role.entity';
 import { Menu } from './entity/menu.entity';
 import { MenuRole } from './entity/menuRole.entity';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
+    RedisModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost', // 数据库主机

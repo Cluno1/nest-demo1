@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 15:56:24
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-14 11:39:20
+ * @LastEditTime: 2025-07-19 12:58:12
  * @FilePath: \nest-demo1\src\entity\eventUser.entity.ts
  * @Description:
  *
@@ -15,8 +15,10 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from './user.entity';
+import { EventData } from './eventData.entity';
 
 @Entity('event_user')
 export class EventUser {
@@ -25,15 +27,14 @@ export class EventUser {
 
   @CreateDateColumn({ name: 'create_time', comment: 'Create Time' })
   createTime?: Date;
-  /**
-   * 关联的用户id
-   */
-  @Column({ name: 'e_user_id', nullable: false, comment: 'user表的id' })
-  eUserId?: number;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'e_user_id' })
   user?: User;
+
+  @OneToMany(() => EventData, (eventData) => eventData.eventUser)
+  eventData?: EventData[];
+
   /**
    * 上传的设备或相关信息，一个用户有多个eventUser
    */

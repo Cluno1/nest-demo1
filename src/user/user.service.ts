@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:06:31
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-18 11:54:03
+ * @LastEditTime: 2025-07-19 11:35:15
  * @FilePath: \nest-demo1\src\user\user.service.ts
  * @Description:
  *
@@ -15,7 +15,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
 import { useLogger } from 'src/utils/logger';
-import { getReturnUser } from 'src/utils/user/userUtil';
+import { getFUllReturnUser } from 'src/utils/user/userUtil';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -42,11 +42,15 @@ export class UserService {
    * @param userId
    * @returns
    */
-  async findOneWithPermissions(userId: number): Promise<User | null> {
-    return this.userRepository.findOne({
+  async findOneWithPermissions(userId: number) {
+    const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['permissions', 'roles.permissions'], // 加载关联权限
+      relations: ['permissions', 'roles', 'roles.permissions'], // 加载关联权限
     });
+    user?.roles?.map((role) => {
+      if (role.permissions) user.permissions?.push(...role.permissions);
+    });
+    return user;
   }
 
   async getUserMenuById(id: number) {
@@ -56,7 +60,7 @@ export class UserService {
     });
   }
   /**
-   *  返回用户+权限
+   *  返回用户+权限 perm是所有该用户具有的perm
    * @param account
    * @returns
    */
@@ -66,18 +70,31 @@ export class UserService {
       'findOneWithPermissionsByAccount',
       account,
     );
-    return this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: { account },
-      relations: ['permissions', 'roles.permissions'], // 加载关联权限
+      relations: ['permissions', 'roles', 'roles.permissions'], // 加载关联权限
     });
+    user?.roles?.map((role) => {
+      if (role.permissions) user.permissions?.push(...role.permissions);
+    });
+    return user;
   }
   /**
    * 获取所有用户
    * @returns
    */
   async findAllUsers() {
-    const users = await this.userRepository.find(); // 查询所有用户数据
-    return users.map((_) => getReturnUser(_));
+    const users = await this.userRepository.find({
+      relations: [
+        'permissions',
+        'roles',
+        'roles.permissions',
+        'roles.menuRoles',
+      ],
+    }); // 查询所有用户数据
+    return users.map((_) => {
+      return getFUllReturnUser(_);
+    });
   }
   /**
    * 更新token 版本
