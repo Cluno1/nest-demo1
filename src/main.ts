@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-06-27 16:32:57
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-16 10:15:10
+ * @LastEditTime: 2025-07-20 23:46:18
  * @FilePath: \nest-demo1\src\main.ts
  * @Description:
  *
@@ -15,7 +15,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // 启用 CORS
   app.enableCors({
-    origin: 'http://localhost:8848',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'X-Requested-With', 'Content-Type'],
     credentials: true, // 如果需要传递 cookies

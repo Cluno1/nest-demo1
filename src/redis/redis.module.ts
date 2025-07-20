@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-19 14:32:31
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-19 15:06:26
+ * @LastEditTime: 2025-07-20 19:37:31
  * @FilePath: \nest-demo1\src\redis\redis.module.ts
  * @Description:
  *
@@ -13,22 +13,32 @@ https://docs.nestjs.com/modules
 */
 
 import { Module } from '@nestjs/common';
-import { RedisService } from './redis.service';
 import { CacheModule } from '@nestjs/cache-manager';
-import * as redisStore from 'cache-manager-redis-store';
+import { RedisService } from './redis.service';
+import { redisStore } from 'cache-manager-redis-store';
+import type { RedisClientOptions } from 'redis';
 
 @Module({
   imports: [
-    CacheModule.registerAsync({
-      useFactory: () => ({
-        store: redisStore,
-        host: 'localhost', // Redis 服务器地址
-        port: 6379, // Redis 端口
-        ttl: 60 * 60, // 默认缓存过期时间(秒)
-      }),
+    CacheModule.registerAsync<RedisClientOptions>({
+      isGlobal: true,
+      useFactory: async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const store = (await redisStore({
+          socket: {
+            host: 'localhost',
+            port: 6379,
+          },
+        })) as unknown as CacheStorage; // 类型断言
+
+        return {
+          store: store,
+          ttl: 60 * 60,
+        };
+      },
     }),
   ],
   providers: [RedisService],
-  exports: [RedisService, CacheModule],
+  exports: [RedisService],
 })
 export class RedisModule {}

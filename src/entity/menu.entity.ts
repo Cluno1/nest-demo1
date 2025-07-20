@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-16 16:33:18
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-17 09:40:11
+ * @LastEditTime: 2025-07-20 22:41:29
  * @FilePath: \nest-demo1\src\entity\menu.entity.ts
  * @Description:
  *
@@ -19,6 +19,14 @@ export class Menu {
 
   @Column({ type: 'varchar', length: 100, nullable: true, comment: '菜单路径' })
   path: string | null = null; // 明确可为 null
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+    comment: '菜单名称-英文',
+  })
+  name: string | null = null; // 明确可为 null
 
   @Column({ type: 'varchar', length: 50, comment: '菜单名称' })
   title!: string; // 必填字段，用非空断言

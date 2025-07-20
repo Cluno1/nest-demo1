@@ -2,15 +2,15 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-16 18:19:52
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-17 14:24:56
+ * @LastEditTime: 2025-07-20 22:48:25
  * @FilePath: \nest-demo1\src\menu\menu.service.ts
  * @Description:
  *
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
  */
-/*
-https://docs.nestjs.com/providers#services
-*/
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { Menu } from 'src/entity/menu.entity';
 import { UserService } from 'src/user/user.service';
@@ -29,7 +29,7 @@ export class MenuService {
       return [];
     }
 
-    const menus: Menu[] = user.roles[0].menuRoles[0].menus;
+    const menus: Menu[] = user?.roles[0]?.menuRoles[0]?.menus;
     return this.transformMenuToRoutes(menus);
   }
 
@@ -41,6 +41,7 @@ export class MenuService {
     return topLevelMenus.map((menu) => {
       const route: ReturnRoute = {
         path: menu?.path,
+        name: menu?.name,
         meta: {
           title: menu.title,
           ...(menu.icon ? { icon: menu.icon } : {}),
@@ -66,6 +67,7 @@ export class MenuService {
     return {
       children: childMenus.map((child) => ({
         path: child.path,
+        name: child.name,
         meta: {
           title: child.title,
           ...(child.icon ? { icon: child.icon } : {}),
