@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:06:31
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-21 12:44:08
+ * @LastEditTime: 2025-07-22 00:19:18
  * @FilePath: \nest-demo1\src\user\user.service.ts
  * @Description:
  *
@@ -11,7 +11,11 @@
 /*
 https://docs.nestjs.com/providers#services
 */
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
 import { INVALID_USER } from 'src/utils/globalMessage';
@@ -26,12 +30,18 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
   /**
-   * 没有权限，仅仅用户
+   * 仅仅用户,包括多对多表,但是没有联级
    * @param account
    * @returns
    */
-  async findOneByAccount(account: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { account } });
+  async findOneByAccount(account: string | null): Promise<User | null> {
+    if (!account) {
+      throw new NotFoundException(INVALID_USER);
+    }
+    return this.userRepository.findOne({
+      where: { account },
+      relations: ['permissions', 'roles'],
+    });
   }
   /**
    * 创建用户
@@ -69,9 +79,9 @@ export class UserService {
    * @param account
    * @returns
    */
-  async findOneWithPermissionsByAccount(account: string) {
+  async findOneWithPermissionsByAccount(account: string | null) {
     if (!account) {
-      return null;
+      throw new NotFoundException(INVALID_USER);
     }
     useLogger.serviceStart(
       '返回用户+权限',
@@ -88,21 +98,66 @@ export class UserService {
     return user;
   }
   /**
-   * 获取所有用户
-   * @returns
+   * 获取所有用户 (分页)
+   * @param page 页码 (从1开始)
+   * @param limit 每页数量
+   * @returns 分页用户数据
    */
-  async findAllUsers() {
-    const users = await this.userRepository.find({
+  async findAllUsers(page: number = 1, limit: number = 10) {
+    const skip = (page - 1) * limit; // 计算跳过的记录数
+
+    const [users, total] = await this.userRepository.findAndCount({
       relations: [
         'permissions',
         'roles',
         'roles.permissions',
         'roles.menuRoles',
       ],
-    }); // 查询所有用户数据
-    return users.map((_) => {
-      return getFUllReturnUser(_);
+      skip,
+      take: limit,
+    }); // 查询分页用户数据及总数
+
+    return {
+      users: users.map(getFUllReturnUser),
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+  /**
+   * 更新用户信息
+   * @param user 要更新的用户对象 (必须包含id)
+   * @returns 更新后的用户信息
+   */
+  async updateUser(user: User) {
+    // 首先检查用户是否存在
+    const existingUser = await this.findOneByAccount(user.account || '');
+
+    if (!existingUser) {
+      throw new NotFoundException(INVALID_USER);
+    }
+
+    // 合并现有用户数据和更新数据
+    const updatedUser = this.userRepository.merge(existingUser, user);
+
+    // 保存更新后的用户
+    const savedUser = await this.userRepository.save(updatedUser);
+
+    // 重新加载用户数据以获取完整的关联关系
+    const reloadedUser = await this.userRepository.findOne({
+      where: { id: savedUser.id },
+      relations: [
+        'permissions',
+        'roles',
+        'roles.permissions',
+        'roles.menuRoles',
+      ],
     });
+
+    return getFUllReturnUser(reloadedUser as User);
   }
   /**
    * 更新token 版本
