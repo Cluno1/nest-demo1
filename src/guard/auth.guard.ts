@@ -2,8 +2,8 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-17 09:54:40
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-17 11:36:43
- * @FilePath: \nest-demo1\src\auth\auth.guard.ts
+ * @LastEditTime: 2025-07-21 13:05:53
+ * @FilePath: \nest-demo1\src\guard\auth.guard.ts
  * @Description:
  *
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
@@ -14,11 +14,11 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 import { useLogger } from 'src/utils/logger';
 import { TOKEN_ERROR } from 'src/utils/globalMessage';
 import { Request } from 'express';
-import { AuthenticatedRequest } from './AuthenticatedRequest';
+import { AuthenticatedRequest } from '../auth/AuthenticatedRequest';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

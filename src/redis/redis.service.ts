@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-19 14:33:58
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-20 19:48:06
+ * @LastEditTime: 2025-07-21 08:51:29
  * @FilePath: \nest-demo1\src\redis\redis.service.ts
  * @Description:
  *

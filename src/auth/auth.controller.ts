@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:53:02
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-17 16:48:22
+ * @LastEditTime: 2025-07-21 11:07:16
  * @FilePath: \nest-demo1\src\auth\auth.controller.ts
  * @Description:
  *
@@ -20,6 +20,7 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
+    useLogger.controllerLog('login', 'login', loginDto);
     const user = await this.authService.validateUser(
       loginDto.account,
       loginDto.password,

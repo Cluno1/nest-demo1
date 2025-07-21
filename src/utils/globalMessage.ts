@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 17:05:40
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-17 16:12:56
+ * @LastEditTime: 2025-07-21 11:54:52
  * @FilePath: \nest-demo1\src\utils\globalMessage.ts
  * @Description:
  *
@@ -16,3 +16,5 @@ export const CATCH_ERROR = 'try-catch 到异常,异常返回值：';
 export const INTERNAL_SERVER_ERROR = '服务器未知错误';
 
 export const ACCOUNT_EXIST = '账号已经存在';
+
+export const NO_PERMISSION = '没有权限';

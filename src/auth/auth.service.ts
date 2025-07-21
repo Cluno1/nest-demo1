@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:41:07
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-19 14:27:08
+ * @LastEditTime: 2025-07-21 12:45:16
  * @FilePath: \nest-demo1\src\auth\auth.service.ts
  * @Description:
  *
@@ -92,7 +92,7 @@ export class AuthService {
         'findOneWithPermissionsByAccount',
         err as Error,
       );
-      throw err;
+      throw new BadRequestException(err);
     }
   }
   async register(registerDto: RegisterDto) {
@@ -190,5 +190,8 @@ export class AuthService {
   async logout(userId: number) {
     await this.userService.revokeRefreshTokens(userId);
     return;
+  }
+  validPermi(userId: number, permi: string | string[]) {
+    return this.userService.validPermi(userId, permi);
   }
 }

@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-16 18:19:52
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-20 22:48:25
+ * @LastEditTime: 2025-07-21 10:22:58
  * @FilePath: \nest-demo1\src\menu\menu.service.ts
  * @Description:
  *
@@ -23,7 +23,7 @@ export class MenuService {
 
   async getAsyncMenu(userId: number): Promise<ReturnRoute[]> {
     const user = await this.userService.getUserMenuById(userId);
-    useLogger.serviceEnd('menu', '', user);
+    useLogger.serviceStart('menu', 'getAsyncMenu', user);
 
     if (!user?.roles?.[0]?.menuRoles?.[0]?.menus) {
       return [];

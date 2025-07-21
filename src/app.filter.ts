@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 15:34:34
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-04 09:54:35
+ * @LastEditTime: 2025-07-21 14:04:04
  * @FilePath: \nest-demo1\src\app.filter.ts
  * @Description:
  *
@@ -23,6 +23,7 @@ import { Response } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { INTERNAL_SERVER_ERROR } from './utils/globalMessage';
+import { useLogger } from './utils/logger';
 
 /**
  * 全局异常过滤器
@@ -30,6 +31,10 @@ import { INTERNAL_SERVER_ERROR } from './utils/globalMessage';
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
+    useLogger.httpError('AllExceptionsFilter', '全局异常过滤器', 500, {
+      exception,
+      host,
+    });
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
@@ -39,6 +44,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     response.status(status).json({
+      success: false,
       message:
         exception instanceof HttpException
           ? exception.message
@@ -58,6 +64,7 @@ export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data: object) => ({
+        success: true,
         code: 200,
         data: data || {},
       })),

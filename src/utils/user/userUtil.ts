@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-15 17:01:28
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-19 11:56:28
+ * @LastEditTime: 2025-07-21 13:41:59
  * @FilePath: \nest-demo1\src\utils\user\userUtil.ts
  * @Description:
  *
@@ -42,7 +42,7 @@ export function getFUllReturnUser(user: User): ReturnUserDto {
   });
   const role = [] as string[];
   user?.roles?.map((r) => {
-    if (r.name) role.push(r.name);
+    if (r.code) role.push(r.code);
   });
   return {
     ...user,

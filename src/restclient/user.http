@@ -18,7 +18,8 @@
 #   "players": []
 # }'
 
-
+//$2b$2b$04$5MK.1HuO9VoDiolQYGdqh.no6GgONe8ycAcXafqoKA8jYz31QCByi
+//$2b$04$5MK.1HuO9VoDiolQYGdqh.no6GgONe8ycAcXafqoKA8jYz31QCByi
 POST  http://localhost:3001/auth/login HTTP/1.1
 content-type: application/json
 
@@ -27,12 +28,17 @@ content-type: application/json
     "password": "123123"
 }
 ###
+
+GET  http://localhost:3001/user/all HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUzMDc4MzE3LCJleHAiOjE3NTM1MTAzMTd9.cRH0PmJMFKXrmVpiRYJmwzwc5JCvwLkvc6CArlqA3Qk
+###
+
 ```json
 
 {
   "code": 200,
   "data": {
-    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyODA5Nzc1LCJleHAiOjE3NTMyNDE3NzV9.T9ki-52-rSq4_zvf3f4cJCNxmOolHW3a4XXZj0NEq7E",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUzMDc4MzE3LCJleHAiOjE3NTM1MTAzMTd9.cRH0PmJMFKXrmVpiRYJmwzwc5JCvwLkvc6CArlqA3Qk",
     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaXNSZWZyZXNoVG9rZW4iOnRydWUsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzUyODA5Nzc1LCJleHAiOjE3NTU0MDE3NzV9.kRvzzR44SMqDCDCZ3HcoO3Q1JPSkoJegfNIlJSXVaVk",
     "expiresIn": "2025/07/23 11:36:15",
     "user": {
