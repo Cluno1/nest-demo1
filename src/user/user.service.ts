@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:06:31
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-22 11:43:31
+ * @LastEditTime: 2025-07-23 00:38:43
  * @FilePath: \nest-demo1\src\user\user.service.ts
  * @Description:
  *
@@ -22,12 +22,19 @@ import { INVALID_USER } from 'src/utils/globalMessage';
 import { useLogger } from 'src/utils/logger';
 import { getFUllReturnUser } from 'src/utils/user/userUtil';
 import { Repository } from 'typeorm';
+import { UpdateUser } from './dto/updateUser.dto';
+import { Permission } from 'src/entity/permission.entity';
+import { Role } from 'src/entity/role.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Permission)
+    private permissionRepository: Repository<Permission>,
+    @InjectRepository(Role)
+    private roleRepository: Repository<Role>,
   ) {}
   /**
    * 仅仅用户,包括多对多表,但是没有联级
@@ -132,23 +139,44 @@ export class UserService {
    * @param user 要更新的用户对象 (必须包含id)
    * @returns 更新后的用户信息
    */
-  async updateUser(user: User) {
-    // 首先检查用户是否存在
-    const existingUser = await this.findOneByAccount(user.account || '');
+  async updateUser(user: UpdateUser) {
+    // First check if user exists
+    const existingUser = await this.findOneByAccount(user.account);
 
     if (!existingUser) {
       throw new NotFoundException(INVALID_USER);
     }
 
-    // 合并现有用户数据和更新数据
-    const updatedUser = this.userRepository.merge(existingUser, user);
+    // Update basic fields
+    const mergedUser = this.userRepository.merge(existingUser, user);
+    await this.userRepository.save(mergedUser);
 
-    // 保存更新后的用户
-    const savedUser = await this.userRepository.save(updatedUser);
+    // Handle relations
+    if (user.uniPermissions) {
+      const permissions = await this.permissionRepository.find({
+        where: user.uniPermissions.map((name) => ({ name })),
+      });
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'permissions')
+        .of(existingUser)
+        .addAndRemove(permissions, existingUser.permissions);
+    }
 
-    // 重新加载用户数据以获取完整的关联关系
+    if (user.rolesCode) {
+      const roles = await this.roleRepository.find({
+        where: user.rolesCode.map((code) => ({ code })),
+      });
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'roles')
+        .of(existingUser)
+        .addAndRemove(roles, existingUser.roles);
+    }
+
+    // Reload to get full relations
     const reloadedUser = await this.userRepository.findOne({
-      where: { id: savedUser.id },
+      where: { id: existingUser.id },
       relations: [
         'permissions',
         'roles',
