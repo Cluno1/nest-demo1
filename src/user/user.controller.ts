@@ -28,4 +28,6 @@ export class UserController {
     useLogger.printLog('/user/all', 'controller层', 'getAllUsers');
     return await this.userService.findAllUsers(page, limit);
   }
+
+  @Post('')
 }

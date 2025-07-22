@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:06:31
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-22 00:19:18
+ * @LastEditTime: 2025-07-22 11:43:31
  * @FilePath: \nest-demo1\src\user\user.service.ts
  * @Description:
  *
@@ -75,7 +75,7 @@ export class UserService {
     });
   }
   /**
-   *  返回用户+权限 perm是该用户具有的所有 perm
+   *  返回用户+权限 perm是该用户具有的所有 perm role
    * @param account
    * @returns
    */

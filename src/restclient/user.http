@@ -74,7 +74,7 @@ content-type: application/json
 
 ###
 Get http://localhost:3001/user/all HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUyNzIwNzYzLCJleHAiOjE3NTMxNTI3NjN9.G5-HEyK2qzuElycgbENym8p6hC17O3mifVyM95rDhLI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudCI6ImFkbWluIiwiaWF0IjoxNzUzMTU5MzQ1LCJleHAiOjE3NTM1OTEzNDV9.wlgc9N_s-Okf_KbJdUE8jCa6umGvV6pasSNeuCQ8G5w
 
 ###
 

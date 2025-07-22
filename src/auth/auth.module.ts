@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:50:10
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-21 14:39:10
+ * @LastEditTime: 2025-07-22 11:42:49
  * @FilePath: \nest-demo1\src\auth\auth.module.ts
  * @Description:
  *
@@ -30,7 +30,7 @@ import { PermissionGuard } from 'src/guard/permi.guard';
     }),
     forwardRef(() => UserModule),
   ],
-  providers: [AuthService, UserService, JwtAuthGuard, PermissionGuard],
+  providers: [AuthService, JwtAuthGuard, PermissionGuard],
   controllers: [AuthController],
   exports: [AuthService, JwtAuthGuard],
 })
