@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:06:31
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-23 00:38:43
+ * @LastEditTime: 2025-07-23 11:31:25
  * @FilePath: \nest-demo1\src\user\user.service.ts
  * @Description:
  *
@@ -25,6 +25,7 @@ import { Repository } from 'typeorm';
 import { UpdateUser } from './dto/updateUser.dto';
 import { Permission } from 'src/entity/permission.entity';
 import { Role } from 'src/entity/role.entity';
+import { NotFoundUser } from 'src/utils/exception';
 
 @Injectable()
 export class UserService {
@@ -136,7 +137,7 @@ export class UserService {
   }
   /**
    * 更新用户信息
-   * @param user 要更新的用户对象 (必须包含id)
+   * @param user 要更新的用户对象
    * @returns 更新后的用户信息
    */
   async updateUser(user: UpdateUser) {
@@ -144,7 +145,7 @@ export class UserService {
     const existingUser = await this.findOneByAccount(user.account);
 
     if (!existingUser) {
-      throw new NotFoundException(INVALID_USER);
+      throw NotFoundUser();
     }
 
     // Update basic fields
@@ -153,9 +154,12 @@ export class UserService {
 
     // Handle relations
     if (user.uniPermissions) {
-      const permissions = await this.permissionRepository.find({
-        where: user.uniPermissions.map((name) => ({ name })),
-      });
+      let permissions = [] as Permission[];
+      if (user.uniPermissions.length > 0) {
+        permissions = await this.permissionRepository.find({
+          where: user.uniPermissions.map((name) => ({ name })),
+        });
+      }
       await this.userRepository
         .createQueryBuilder()
         .relation(User, 'permissions')
@@ -164,9 +168,12 @@ export class UserService {
     }
 
     if (user.rolesCode) {
-      const roles = await this.roleRepository.find({
-        where: user.rolesCode.map((code) => ({ code })),
-      });
+      let roles = [] as Role[];
+      if (user.rolesCode.length > 0) {
+        roles = await this.roleRepository.find({
+          where: user.rolesCode.map((code) => ({ code })),
+        });
+      }
       await this.userRepository
         .createQueryBuilder()
         .relation(User, 'roles')

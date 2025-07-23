@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-16 18:20:03
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-17 10:21:55
+ * @LastEditTime: 2025-07-23 09:45:38
  * @FilePath: \nest-demo1\src\menu\menu.module.ts
  * @Description:
  *
@@ -19,12 +19,11 @@ import { MenuRole } from 'src/entity/menuRole.entity';
 import { Role } from 'src/entity/role.entity';
 import { MenuController } from './menu.controller';
 import { MenuService } from './menu.service';
-import { UserService } from 'src/user/user.service';
 import { User } from 'src/entity/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { SECRET_PWD, TOKEN_TIME } from 'src/utils/bcrypt';
 import { AuthModule } from 'src/auth/auth.module';
-import { AuthService } from 'src/auth/auth.service';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -34,8 +33,9 @@ import { AuthService } from 'src/auth/auth.service';
       signOptions: { expiresIn: TOKEN_TIME }, // Token 有效期
     }),
     AuthModule,
+    UserModule,
   ],
   controllers: [MenuController],
-  providers: [MenuService, UserService, AuthService],
+  providers: [MenuService],
 })
 export class MenuModule {}

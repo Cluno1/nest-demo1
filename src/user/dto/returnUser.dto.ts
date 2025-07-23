@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-15 17:04:11
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-22 23:23:54
+ * @LastEditTime: 2025-07-23 15:02:04
  * @FilePath: \nest-demo1\src\user\dto\returnUser.dto.ts
  * @Description:
  *
@@ -29,7 +29,7 @@ export class ReturnUserDto {
    * 菜单角色
    */
   menuRoles?: string[];
-  createTime?: Date;
+  createTime?: Date | string;
   /**
    * 描述
    */
@@ -41,10 +41,10 @@ export class ReturnUserDto {
   /**
    * 是否逻辑删除
    */
-  is_delete?: number;
-  delete_time?: Date;
+  isDDlete?: number;
+  deleteTime?: Date | string;
   /**
    * 让token失效
    */
-  token_version?: number;
+  tokenVersion?: number;
 }

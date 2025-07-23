@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-21 11:49:46
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-21 14:15:52
+ * @LastEditTime: 2025-07-23 11:11:22
  * @FilePath: \nest-demo1\src\guard\permi.guard.ts
  * @Description:
  *
@@ -34,7 +34,7 @@ export class PermissionGuard implements CanActivate {
       PERMISSIONS_KEY,
       context.getHandler(),
     );
-    useLogger.printLog('come to hasPermi guard');
+    // useLogger.printLog('come to hasPermi guard');
 
     // 2. 如果没有设置权限要求，直接放行
     if (!requiredPermissions) {

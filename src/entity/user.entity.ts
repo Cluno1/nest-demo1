@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 15:53:51
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-23 00:00:33
+ * @LastEditTime: 2025-07-23 15:02:55
  * @FilePath: \nest-demo1\src\entity\user.entity.ts
  * @Description:
  *

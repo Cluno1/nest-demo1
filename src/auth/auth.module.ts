@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-02 16:50:10
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-22 11:42:49
+ * @LastEditTime: 2025-07-23 11:09:40
  * @FilePath: \nest-demo1\src\auth\auth.module.ts
  * @Description:
  *
@@ -15,7 +15,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Permission } from 'src/entity/permission.entity';
 import { User } from 'src/entity/user.entity';
 import { AuthService } from './auth.service';
-import { UserService } from 'src/user/user.service';
 import { SECRET_PWD, TOKEN_TIME } from 'src/utils/bcrypt';
 import { JwtAuthGuard } from '../guard/auth.guard';
 import { UserModule } from 'src/user/user.module';
@@ -32,6 +31,6 @@ import { PermissionGuard } from 'src/guard/permi.guard';
   ],
   providers: [AuthService, JwtAuthGuard, PermissionGuard],
   controllers: [AuthController],
-  exports: [AuthService, JwtAuthGuard],
+  exports: [AuthService, JwtAuthGuard, PermissionGuard],
 })
 export class AuthModule {}

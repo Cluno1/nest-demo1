@@ -19,10 +19,14 @@ import { useLogger } from 'src/utils/logger';
 import { TOKEN_ERROR } from 'src/utils/globalMessage';
 import { Request } from 'express';
 import { AuthenticatedRequest } from '../auth/AuthenticatedRequest';
+import { PermissionGuard } from './permi.guard';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly permissionGuard: PermissionGuard,
+  ) {}
 
   canActivate(context: ExecutionContext) {
     const httpContext = context.switchToHttp();
@@ -41,7 +45,7 @@ export class JwtAuthGuard implements CanActivate {
 
       // 添加类型断言确保类型安全
       (request as unknown as AuthenticatedRequest).user = payload;
-      return true;
+      return this.permissionGuard.canActivate(context);
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

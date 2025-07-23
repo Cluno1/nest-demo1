@@ -2,7 +2,7 @@
  * @Author: zld 17875477802@163.com
  * @Date: 2025-07-16 18:19:38
  * @LastEditors: zld 17875477802@163.com
- * @LastEditTime: 2025-07-21 10:04:55
+ * @LastEditTime: 2025-07-23 10:47:21
  * @FilePath: \nest-demo1\src\menu\menu.controller.ts
  * @Description:
  *
@@ -33,7 +33,7 @@ export class MenuController {
    */
   @Get('async_menu')
   async getAsyncMenu(@Request() req: AuthenticatedRequest) {
-    useLogger.controllerLog('menu', 'getAsyncMenu', req);
+    useLogger.controllerLog('menu', 'getAsyncMenu', req.user);
     // 直接从请求对象的 user 属性中获取解析后的 payload
     const { id } = req.user;
     return await this.menuService.getAsyncMenu(id);
